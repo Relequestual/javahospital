@@ -23,19 +23,37 @@ package GridObjects.items;
 
 import java.awt.Point;
 
+/**
+ * The Class UsableItem.
+ */
 public abstract class UsableItem extends Item {
+    
+    /** The point of usage. */
     Point pointOfUsage;
 
+    /**
+     * Gets the point of usage.
+     * 
+     * @return the point of usage
+     */
     public Point getPointOfUsage() {
 	return pointOfUsage;
     }
 
+    /**
+     * Sets the point of useage.
+     * 
+     * @param point the new point of useage
+     */
     public void setPointOfUseage(Point point) {
 	pointOfUsage = point;
     }
 
     // This method finds the fix point or points of usage for an item when it is
     // designed or rotated.
+    /* (non-Javadoc)
+     * @see GridObjects.items.Item#findPointOfUse()
+     */
     public abstract void findPointOfUse();
 
 }

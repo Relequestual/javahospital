@@ -21,12 +21,28 @@
  ******************************************************************************/
 package GridObjects.Buildings;
 
+// TODO: Auto-generated Javadoc
+/**
+ * A factory for creating Room objects.
+ */
 public class RoomFactory {
 
+    /**
+     * The Enum RoomType.
+     */
     public enum RoomType {
+	
+	/** The GP office. */
 	GPOffice
     }
 
+    /**
+     * Creates a new Room object.
+     * 
+     * @param roomType the room type
+     * 
+     * @return the room
+     */
     public static Room createRoom(RoomType roomType) {
 
 	switch (roomType) {

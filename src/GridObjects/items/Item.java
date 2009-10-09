@@ -26,23 +26,47 @@ import java.awt.Graphics;
 import level.Game;
 import GridObjects.GridObject;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class Item.
+ */
 public abstract class Item extends GridObject {
+    
+    /** The rotation. */
     private int rotation;
 
+    /**
+     * Can rotate.
+     * 
+     * @return true, if successful
+     */
     public boolean canRotate() {
 	return true;
     }
 
+    /**
+     * Gets the rotation.
+     * 
+     * @return the rotation
+     */
     public int getRotation() {
 	return rotation;
     }
 
+    /**
+     * Sets the rotation.
+     * 
+     * @param rotation the new rotation
+     */
     public void setRotation(int rotation) {
 	this.rotation = rotation;
     }
 
     // The reason the rotation is in the item class is to deal with graphics.
     // In fact, this could even be placed down as low as the GridObject class.
+    /**
+     * Rotate me.
+     */
     public void rotateMe() {
 	System.out.println("rotation called");
 	if (rotation != 4) {
@@ -52,11 +76,17 @@ public abstract class Item extends GridObject {
 	}
     }
 
+    /* (non-Javadoc)
+     * @see GridObjects.GridObject#paint(java.awt.Graphics)
+     */
     public void paint(Graphics graphic) {
 	graphic.setColor(getColor());
 	int gridSize = Game.getGame().getGridSize();
 	graphic.fillRect(getX()*gridSize, getY()*gridSize, gridSize * this.getWidth(), gridSize * this.getHeight());
     }
 
+    /**
+     * Find point of use.
+     */
     public abstract void findPointOfUse();
 }

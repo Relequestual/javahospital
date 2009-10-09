@@ -32,9 +32,7 @@ import diseases.Disease;
 
 import level.Board;
 import level.Game;
-import level.LevelMap;
 import level.GridSquare.SquareType;
-import pathFinding.GameMap;
 import pathFinding.Path;
 import GridObjects.GridObject;
 import GridObjects.Buildings.Room;
@@ -44,21 +42,54 @@ import GridObjects.items.ItemFactory;
 import GridObjects.items.UsableItem;
 import GridObjects.items.ItemFactory.ItemType;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class Person.
+ */
 public class Person extends GridObject {
+    
+    /** The grid object colour. */
     Color gridObjectColour = Color.orange;
+    
+    /** The next target. */
     Point nextTarget;
+    
+    /** The next point. */
     Point nextPoint;
+    
+    /** The current path. */
     Path currentPath = new Path();
+    
+    /** The person no. */
     Integer personNo = null;
+    
+    /** The my desease. */
     Disease myDesease = new Disease();
+    
+    /** The spawned boolean. */
     Boolean spawned = false;
+    
+    /** The remove boolean. */
     Boolean remove = false;
+    
+    /** The wandering. */
     Boolean wandering = false;
 
+    /**
+     * Gets the person no.
+     * 
+     * @return the person no
+     */
     public Integer getPersonNo() {
 	return personNo;
     }
 
+    /**
+     * Instantiates a new person.
+     * 
+     * @param topLeftEntered the top left entered
+     * @param number the number
+     */
     public Person(Point topLeftEntered, Integer number) {
 	topLeftPoint = topLeftEntered;
 	personNo = number;
@@ -67,39 +98,80 @@ public class Person extends GridObject {
 	myDesease.init();
     }
 
+    /**
+     * Sets the wandering.
+     * 
+     * @param wandering the new wandering
+     */
     public void setWandering(Boolean wandering) {
         this.wandering = wandering;
     }
 
+    /**
+     * Gets the next point.
+     * 
+     * @return the next point
+     */
     public Point getNextPoint() {
 	return nextPoint;
     }
 
+    /**
+     * Sets the next point.
+     * 
+     * @param nextPoint the new next point
+     */
     public void setNextPoint(Point nextPoint) {
 	this.nextPoint = nextPoint;
     }
 
+    /**
+     * Gets the current path.
+     * 
+     * @return the current path
+     */
     public Path getCurrentPath() {
 	return currentPath;
     }
 
+    /**
+     * Sets the current path.
+     * 
+     * @param currentPath the new current path
+     */
     public void setCurrentPath(Path currentPath) {
 	this.currentPath = currentPath;
     }
 
+    /* (non-Javadoc)
+     * @see GridObjects.GridObject#getColor()
+     */
     public Color getColor() {
 	return gridObjectColour;
     }
 
+    /**
+     * Gets the next target.
+     * 
+     * @return the next target
+     */
     public Point getNextTarget() {
 	return nextTarget;
     }
 
+    /**
+     * Sets the next target.
+     * 
+     * @param nextTarget the new next target
+     */
     public void setNextTarget(Point nextTarget) {
 	this.nextTarget = nextTarget;
 	recalcPath();
     }
 
+    /**
+     * Move towards next square.
+     */
     public void moveTowardsNextSquare() {
 
 	System.out.println("is at end order? " + myDesease.isEndOrder());
@@ -142,6 +214,12 @@ public class Person extends GridObject {
 	}
     }
 
+    /**
+     * Check targets.
+     * If the disease is not on the end order, if the path length is less than one, 
+     * and the person is spawned, take the next item in the list, and make the person
+     * go to the room or item.  Otherwise out of second if, set spawned to true.
+     */
     public void checkTargets() {
 	if (!myDesease.isEndOrder()) {
 	    System.out.println(currentPath.getLength() + " " + spawned + " " + myDesease.isEndOrder());
@@ -169,21 +247,18 @@ public class Person extends GridObject {
 	}
     }
 
+    /**
+     * Update next point.
+     * This method needs a bit of a clean... hummm...
+     * 
+     */
     public void updateNextPoint() {
-	// System.out.println("is at target " + (getNextTarget() ==
-	// getTopLeftPoint()));
 	if (nextTarget != getTopLeftPoint() || nextTarget == null) {
-	    // System.out.println("There is a next target! :)" + nextTarget +
-	    // " currently at " + getTopLeftPoint());
-
-	    // System.out.println("next step top left " + nextPoint + " " +
-	    // getTopLeftPoint() + "path? " + (currentPath.getLength() > 0));
 	    if (nextPoint.equals(getTopLeftPoint())) {
 		Point spawnTo = new Point(Game.getGame().getLevelMap().getSpawnPoints().get(0).getSpawnTo());
-		spawnTo = new Point(spawnTo.x * Game.getGame().getGridSize(), spawnTo.y * Game.getGame().getGridSize());
+		spawnTo = new Point(Game.getGame().gameToScreen(spawnTo));
 		Point spawnFrom = new Point(Game.getGame().getLevelMap().getSpawnPoints().get(0).getSpawnFrom());
-		spawnFrom = new Point(spawnFrom.x * Game.getGame().getGridSize(), spawnFrom.y
-			* Game.getGame().getGridSize());
+		spawnFrom = new Point(Game.getGame().gameToScreen(spawnFrom));
 		System.out.println("end check " + getTopLeftPoint() + " " + spawnTo);
 
 		if (this.getTopLeftPoint().equals(spawnTo) && myDesease.isEndOrder()) {
@@ -193,9 +268,6 @@ public class Person extends GridObject {
 		    System.out.println("Person should now die");
 		    remove = true;
 		} else if (currentPath.getLength() > 0) {
-		    // System.out.println("into the next point assign");
-		    // System.out.println("next point will be " + new
-		    // Point(currentPath.getStep(1).getX(),currentPath.getStep(1).getY()));
 		    setNextPoint(new Point(currentPath.getStep(0).getX() * Game.getGame().getGridSize(), currentPath
 			    .getStep(0).getY()
 			    * Game.getGame().getGridSize()));
@@ -207,6 +279,9 @@ public class Person extends GridObject {
 	}
     }
 
+    /**
+     * Recalculates the path.
+     */
     public void recalcPath() {
 	System.out.println("target is " + getNextTarget() + " p is at " + getTopLeftPoint());
 	Path path = Game.getGame().getFinder().findPath(getTopLeftPoint().x / Game.getGame().getGridSize(),
@@ -214,34 +289,56 @@ public class Person extends GridObject {
 	setCurrentPath(path);
     }
 
+    /**
+     * Gets the remove boolean.
+     * 
+     * @return remove
+     */
     public Boolean getRemove() {
 	return remove;
     }
 
+    /**
+     * Move up.
+     */
     public void moveUp() {
 	int x = nextPoint.x;
 	int y = nextPoint.y - Game.getGame().getGridSize();
 	nextPoint = new Point(x, y);
     }
 
+    /**
+     * Move down.
+     */
     public void moveDown() {
 	int x = nextPoint.x;
 	int y = nextPoint.y + Game.getGame().getGridSize();
 	nextPoint = new Point(x, y);
     }
 
+    /**
+     * Move left.
+     */
     public void moveLeft() {
 	int x = nextPoint.x - Game.getGame().getGridSize();
 	int y = nextPoint.y;
 	nextPoint = new Point(x, y);
     }
 
+    /**
+     * Move right.
+     */
     public void moveRight() {
 	int x = nextPoint.x + Game.getGame().getGridSize();
 	int y = nextPoint.y;
 	nextPoint = new Point(x, y);
     }
 
+    /**
+     * Go to a room or usable item
+     * 
+     * @param dest the destination object, ie room or usable item.
+     */
     public void goTo(GridObject dest) {
 	if (dest instanceof Room) {
 	    if (Game.getGame().getRooms().size() == 0) {
@@ -274,6 +371,10 @@ public class Person extends GridObject {
 	}
     }
 
+    /**
+     * Wander.
+     * Called when a person has no location, and just wanders around.
+     */
     public void wander() {
 	System.out.println("wander called---------" + wandering);
 	if (wandering) {
@@ -305,6 +406,9 @@ public class Person extends GridObject {
 	}
     }
 
+    /* (non-Javadoc)
+     * @see GridObjects.GridObject#paint(java.awt.Graphics)
+     */
     public void paint(Graphics graphic) {
 	int gridSize = Game.getGame().getGridSize();
 	graphic.setColor(this.getColor());

@@ -26,20 +26,36 @@ import java.awt.Point;
 
 import level.Game;
 
+/**
+ * The Class ReceptionDesk.
+ */
 public class ReceptionDesk extends UsableItem {
+    
+    /** The grid object colour. */
     Color gridObjectColour = new Color(199, 255, 97);
 
+    /* (non-Javadoc)
+     * @see GridObjects.GridObject#getColor()
+     */
     public Color getColor() {
 	return gridObjectColour;
     }
 
     //This constructor is used during building preview
     //TODO: this needs to be changed to use the factory.
+    /**
+     * Instantiates a new reception desk.
+     * 
+     * @param topLeftEntered the top left entered
+     */
     public ReceptionDesk(Point topLeftEntered) {
 	this.topLeftPoint = topLeftEntered;
 	findPointOfUse();
     }
 
+    /**
+     * Instantiates a new reception desk.
+     */
     public ReceptionDesk() {
 	System.out.println("new rd called con");
 	setRotation(1);

@@ -21,12 +21,30 @@
  ******************************************************************************/
 package GridObjects.items;
 
+// TODO: Auto-generated Javadoc
+/**
+ * A factory for creating Item objects.
+ */
 public class ItemFactory {
 
+    /**
+     * The Enum ItemType.
+     */
     public enum ItemType {
-	ReceptionDesk, VendMachine
+	
+	/** The Reception desk. */
+	ReceptionDesk, 
+        /** The Vend machine. */
+        VendMachine
     }
 
+    /**
+     * Creates a new Item object.
+     * 
+     * @param itemType the item type
+     * 
+     * @return the item
+     */
     public static Item createItem(ItemType itemType) {
 
 	switch (itemType) {

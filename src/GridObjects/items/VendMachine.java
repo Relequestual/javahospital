@@ -26,13 +26,27 @@ import java.awt.Point;
 
 import level.Game;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class VendMachine.
+ */
 public class VendMachine extends UsableItem {
+    
+    /** The grid object colour. */
     Color gridObjectColour = new Color(199, 255, 97);
 
+    /* (non-Javadoc)
+     * @see GridObjects.GridObject#getColor()
+     */
     public Color getColor() {
 	return gridObjectColour;
     }
 
+    /**
+     * Instantiates a new vend machine.
+     * 
+     * @param topLeftEntered the top left entered
+     */
     public VendMachine(Point topLeftEntered) {
 	this.topLeftPoint = topLeftEntered;
 	findPointOfUse();
@@ -40,6 +54,9 @@ public class VendMachine extends UsableItem {
 	height = 1;
     }
 
+    /**
+     * Instantiates a new vend machine.
+     */
     public VendMachine() {
     }
 
