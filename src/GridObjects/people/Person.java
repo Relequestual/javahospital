@@ -268,9 +268,8 @@ public class Person extends GridObject {
 		    System.out.println("Person should now die");
 		    remove = true;
 		} else if (currentPath.getLength() > 0) {
-		    setNextPoint(new Point(currentPath.getStep(0).getX() * Game.getGame().getGridSize(), currentPath
-			    .getStep(0).getY()
-			    * Game.getGame().getGridSize()));
+		    setNextPoint(new Point(currentPath.getStep(0).getX() * Game.getGame().getGridSize(), 
+			    currentPath.getStep(0).getY()* Game.getGame().getGridSize()));
 		    currentPath.nextStep();
 		} else if (wandering) {
 		    wander();

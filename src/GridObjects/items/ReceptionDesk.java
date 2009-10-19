@@ -51,6 +51,7 @@ public class ReceptionDesk extends UsableItem {
     public ReceptionDesk(Point topLeftEntered) {
 	this.topLeftPoint = topLeftEntered;
 	findPointOfUse();
+	nextStageTime = 2;
     }
 
     /**

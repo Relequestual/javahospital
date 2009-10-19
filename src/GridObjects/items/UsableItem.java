@@ -30,6 +30,8 @@ public abstract class UsableItem extends Item {
     
     /** The point of usage. */
     Point pointOfUsage;
+    
+    int nextStageTime;    
 
     /**
      * Gets the point of usage.
