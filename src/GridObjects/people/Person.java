@@ -179,11 +179,6 @@ public class Person extends GridObject {
 	    checkTargets();
 	} else if (!wandering) {
 	    System.out.println("On END ORDER!!!");
-	    if (getTopLeftPoint().equals(Game.getGame().getLevelMap().getSpawnPoints().get(0).getSpawnFrom())) {
-		// System.out.println();
-		// System.out.println("Person should now die");
-		// Game.getGame().getPeople().remove(this);
-	    }
 	    if (currentPath == null) {
 		// Point spawnFrom = new
 		// Point(LevelMap.getSpawnPoints().get(0).getSpawnFrom());
@@ -354,7 +349,15 @@ public class Person extends GridObject {
 	    }
 	} else if (dest instanceof UsableItem) {
 	    if (Game.getGame().getUsableItems().size() == 0) {
-		wander();
+		if(!wandering){
+		if (Game.getGame().screenToGame(this.getTopLeftPoint()).equals(
+			    Game.getGame().getLevelMap().getEndOfPathPoint()) || this.myDesease.getOnOrder()!=0) {
+			wandering = true;
+		    } else if (this.getNextTarget() != Game.getGame().getLevelMap().getEndOfPathPoint() && this.myDesease.getOnOrder()==0) {
+			setNextTarget(Game.getGame().getLevelMap().getEndOfPathPoint());
+		    }
+		}
+		//wander();
 	    } else {
 		for (UsableItem item : Game.getGame().getUsableItems()) {
 		    if (item.getClass().isInstance(dest)) {
@@ -382,7 +385,8 @@ public class Person extends GridObject {
 	    LinkedList<Point> thisSet = new LinkedList<Point>();
 	    for (int x = personAt.x - 2; x < personAt.x + 3; x++) {
 		for (int y = personAt.y - 2; y < personAt.y + 3; y++) {
-		    if (!(x == personAt.x) && !(y == personAt.y)) {
+		    if (!(x == personAt.x && y == personAt.y)) {
+			//TODO: Clean up the next line of code.
 			if (x > 0 && y > 0 && !Board.getBoard().getSquare(x, y).getSquareType().equals(SquareType.path)) {
 			    if (!Game.getGame().getMap().blocked(x, y)) {
 				thisSet.add(new Point(x, y));
@@ -392,9 +396,9 @@ public class Person extends GridObject {
 		}
 	    }
 	    Collections.shuffle(thisSet);
-	    Random random = new Random();
-	    Integer randomNo = random.nextInt(thisSet.size());
-	    setNextTarget(thisSet.get(randomNo));
+	    //Random random = new Random();
+	    //Integer randomNo = random.nextInt(thisSet.size());
+	    setNextTarget(thisSet.get(0));
 	} else {
 	    if (Game.getGame().screenToGame(this.getTopLeftPoint()).equals(
 		    Game.getGame().getLevelMap().getEndOfPathPoint()) || this.myDesease.getOnOrder()!=0) {
