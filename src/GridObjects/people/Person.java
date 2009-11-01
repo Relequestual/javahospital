@@ -42,7 +42,6 @@ import GridObjects.items.ItemFactory;
 import GridObjects.items.UsableItem;
 import GridObjects.items.ItemFactory.ItemType;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class Person.
  */
