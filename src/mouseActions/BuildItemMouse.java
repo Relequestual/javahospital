@@ -135,8 +135,8 @@ public class BuildItemMouse implements MouseListener, MouseMotionListener {
 	// This single line solved half a problem that plagued me for 2days!
 	// YAY!
 	Game.getGame().clearBuildingPreview();
-	hospitalGamePanel.getGamePanel().SetMouseListener(new standardGameMouse());
-	hospitalGamePanel.getGamePanel().SetMouseMotionListener(new standardGameMouse());
+	hospitalGamePanel.getGamePanel().setMouseListener(new standardGameMouse());
+	hospitalGamePanel.getGamePanel().setMouseMotionListener(new standardGameMouse());
     }
 
     @Override

@@ -94,8 +94,8 @@ public class BuildRoomDoorMouse implements MouseListener, MouseMotionListener {
 	    thisBuild.buildDoor();
 
 	    Game.getGame().addRoom(thisBuild);
-	    hospitalGamePanel.getGamePanel().SetMouseListener(new standardGameMouse());
-	    hospitalGamePanel.getGamePanel().SetMouseMotionListener(new standardGameMouse());
+	    hospitalGamePanel.getGamePanel().setMouseListener(new standardGameMouse());
+	    hospitalGamePanel.getGamePanel().setMouseMotionListener(new standardGameMouse());
 	}
     }
 

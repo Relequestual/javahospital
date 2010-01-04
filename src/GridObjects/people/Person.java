@@ -46,31 +46,31 @@ import GridObjects.items.ItemFactory.ItemType;
  * The Class Person.
  */
 public class Person extends GridObject {
-    
+
     /** The grid object colour. */
     Color gridObjectColour = Color.orange;
-    
+
     /** The next target. */
     Point nextTarget;
-    
+
     /** The next point. */
     Point nextPoint;
-    
+
     /** The current path. */
     Path currentPath = new Path();
-    
+
     /** The person no. */
     Integer personNo = null;
-    
+
     /** The my desease. */
     Disease myDesease = new Disease();
-    
+
     /** The spawned boolean. */
     Boolean spawned = false;
-    
+
     /** The remove boolean. */
     Boolean remove = false;
-    
+
     /** The wandering. */
     Boolean wandering = false;
 
@@ -86,8 +86,10 @@ public class Person extends GridObject {
     /**
      * Instantiates a new person.
      * 
-     * @param topLeftEntered the top left entered
-     * @param number the number
+     * @param topLeftEntered
+     *            the top left entered
+     * @param number
+     *            the number
      */
     public Person(Point topLeftEntered, Integer number) {
 	topLeftPoint = topLeftEntered;
@@ -100,10 +102,11 @@ public class Person extends GridObject {
     /**
      * Sets the wandering.
      * 
-     * @param wandering the new wandering
+     * @param wandering
+     *            the new wandering
      */
     public void setWandering(Boolean wandering) {
-        this.wandering = wandering;
+	this.wandering = wandering;
     }
 
     /**
@@ -118,7 +121,8 @@ public class Person extends GridObject {
     /**
      * Sets the next point.
      * 
-     * @param nextPoint the new next point
+     * @param nextPoint
+     *            the new next point
      */
     public void setNextPoint(Point nextPoint) {
 	this.nextPoint = nextPoint;
@@ -136,13 +140,16 @@ public class Person extends GridObject {
     /**
      * Sets the current path.
      * 
-     * @param currentPath the new current path
+     * @param currentPath
+     *            the new current path
      */
     public void setCurrentPath(Path currentPath) {
 	this.currentPath = currentPath;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see GridObjects.GridObject#getColor()
      */
     public Color getColor() {
@@ -161,7 +168,8 @@ public class Person extends GridObject {
     /**
      * Sets the next target.
      * 
-     * @param nextTarget the new next target
+     * @param nextTarget
+     *            the new next target
      */
     public void setNextTarget(Point nextTarget) {
 	this.nextTarget = nextTarget;
@@ -169,105 +177,142 @@ public class Person extends GridObject {
     }
 
     /**
+     * This method is called for each person on a timer.
+     */
+    public void tick() {
+	if (spawned) {
+	    //System.out.println(" this tick its " + !this.getTopLeftPoint().equals(this.getNextPoint()));
+	    if (!this.getTopLeftPoint().equals(this.getNextPoint())) {
+		
+		// No code needed, as moveTowardsNextSquare is outside of the if
+		// statement.
+	    } else {
+		// Inside this if, means person is on a square. Not part way
+		// between squares.
+		if (!this.getTopLeftPoint().equals(
+			Game.getGame().gameToScreen(this.getNextTarget())) && currentPath.getLength()>=1) {
+		    // Inside this if, means person is on a square, but the
+		    // square is not the end target square.
+		    setNextPoint(new Point(currentPath.getStep(0).getX() * Game.getGame().getGridSize(), 
+                            currentPath.getStep(0).getY()* Game.getGame().getGridSize()));
+		    this.currentPath.nextStep();
+		} else {
+		    // Inside this else, means person has reached the end target
+		    // square!
+		    checkForNewTargets();
+		}
+	    }
+	} else{
+	    timeToSpawn();
+	}
+	//this.setNextPoint(new Point(currentPath.getStep(0).getX(),currentPath.getStep(0).getY()));
+
+	moveTowardsNextSquare();
+    }
+
+    /**
+     * If a person is on a the square which is its target,
+     */
+    private void checkForNewTargets() {
+	if (!this.myDesease.isEndOrder()) {
+	    updateNextTarget();
+	} else {
+	    timeToUnSpawn();
+	}
+    }
+
+    /**
+     * If a person has not spawned, this method will be called each tick, and it
+     * will deal with spawning.
+     */
+    private void timeToSpawn() {
+	// Code for working out spawnFrom and spawnTo...
+	System.out.println("time to spanw :)");
+	Point spawnTo = new Point(Game.getGame().getLevelMap().getSpawnPoints()
+		.get(0).getSpawnTo());
+	spawnTo = new Point(Game.getGame().gameToScreen(spawnTo));
+	Point spawnFrom = new Point(Game.getGame().getLevelMap()
+		.getSpawnPoints().get(0).getSpawnFrom());
+	spawnFrom = new Point(Game.getGame().gameToScreen(spawnFrom));
+	// end
+
+	if (getTopLeftPoint().equals(spawnFrom)) {
+	    setNextPoint(spawnTo);
+	} else if (getTopLeftPoint().equals(spawnTo)) {
+	    setNextTarget(Game.getGame().getLevelMap().getEndOfPathPoint());
+	    spawned = true;
+	    this.currentPath.nextStep();
+	}
+    }
+
+    /**
+     * A sad method :( Previously named timeToDie, however die might be used
+     * elsewhere. This method deals with the reverse of spawning, which is
+     * un-spawning?
+     */
+    private void timeToUnSpawn() {
+	// Code for working out spawnFrom and spawnTo...
+	Point spawnTo = new Point(Game.getGame().getLevelMap().getSpawnPoints()
+		.get(0).getSpawnTo());
+	spawnTo = new Point(Game.getGame().gameToScreen(spawnTo));
+	Point spawnFrom = new Point(Game.getGame().getLevelMap()
+		.getSpawnPoints().get(0).getSpawnFrom());
+	spawnFrom = new Point(Game.getGame().gameToScreen(spawnFrom));
+	// end
+
+	if (!this.getTopLeftPoint().equals(spawnTo) && !this.getTopLeftPoint().equals(spawnFrom)) {
+	    setNextTarget(Game.getGame().screenToGame(spawnTo));
+	} else {
+	    setNextPoint(spawnFrom);
+	    if (getTopLeftPoint().equals(spawnFrom)) {
+		this.remove = true;
+	    }
+	}
+	// if above else if is false, no action is needed.
+    }
+
+    /**
      * Move towards next square.
      */
     public void moveTowardsNextSquare() {
 
-	System.out.println("is at end order? " + myDesease.isEndOrder());
-	if (!myDesease.isEndOrder()) {
-	    checkTargets();
-	} else if (!wandering) {
-	    System.out.println("On END ORDER!!!");
-	    if (currentPath == null) {
-		// Point spawnFrom = new
-		// Point(LevelMap.getSpawnPoints().get(0).getSpawnFrom());
-		// setNextPoint(new
-		// Point(spawnFrom.x*Game.getGame().getGridSize(),spawnFrom.y*Game.getGame().getGridSize()));
-	    } else if (nextPoint.equals(getTopLeftPoint())) {
-		if (currentPath.getLength() < 1) {
-		    setNextTarget(new Point(Game.getGame().getLevelMap().getSpawnPoints().get(0).getSpawnTo()));
-		}
-	    }
-	}
-	updateNextPoint();
-
 	if (!nextPoint.equals(getTopLeftPoint())) {
 	    // System.out.println("next point is not topLeft");
 	    if (nextPoint.y < getTopLeftPoint().y) {
-		setTopLeftPoint(new Point((int) getTopLeftPoint().getX(), (int) getTopLeftPoint().getY() - 5));
+		setTopLeftPoint(new Point((int) getTopLeftPoint().getX(),
+			(int) getTopLeftPoint().getY() - 5));
 	    }
 	    if (nextPoint.y > getTopLeftPoint().y) {
-		setTopLeftPoint(new Point((int) getTopLeftPoint().getX(), (int) getTopLeftPoint().getY() + 5));
+		setTopLeftPoint(new Point((int) getTopLeftPoint().getX(),
+			(int) getTopLeftPoint().getY() + 5));
 	    }
 	    if (nextPoint.x < getTopLeftPoint().x) {
-		setTopLeftPoint(new Point((int) getTopLeftPoint().getX() - 5, (int) getTopLeftPoint().getY()));
+		setTopLeftPoint(new Point((int) getTopLeftPoint().getX() - 5,
+			(int) getTopLeftPoint().getY()));
 	    }
 	    if (nextPoint.x > getTopLeftPoint().x) {
-		setTopLeftPoint(new Point((int) getTopLeftPoint().getX() + 5, (int) getTopLeftPoint().getY()));
+		setTopLeftPoint(new Point((int) getTopLeftPoint().getX() + 5,
+			(int) getTopLeftPoint().getY()));
 	    }
 	}
     }
 
     /**
-     * Check targets.
-     * If the disease is not on the end order, if the path length is less than one, 
-     * and the person is spawned, take the next item in the list, and make the person
-     * go to the room or item.  Otherwise out of second if, set spawned to true.
+     * Check targets. Take the next item in the list, and make the person go to
+     * the room or item.
      */
-    public void checkTargets() {
-	if (!myDesease.isEndOrder()) {
-	    System.out.println(currentPath.getLength() + " " + spawned + " " + myDesease.isEndOrder());
-	    if (currentPath.getLength() < 1 && spawned) {
-		System.out.println("targets being checked");
-		String toCreate = (myDesease.getOrder().get(myDesease.getOnOrder()));
-		GridObject thisRoom = null, thisItem = null;
-		try {
-		    thisRoom = RoomFactory.createRoom(RoomType.valueOf(toCreate));
-		} catch (Exception exception) {
-		    thisItem = ItemFactory.createItem(ItemType.valueOf(toCreate));
-		} finally {
-
-		    if (thisRoom != null) {
-			goTo(thisRoom);
-		    } else if(thisItem != null) {
-			goTo(thisItem);
-		    }
-		}
-	    } else {
-		if (nextPoint.equals(getTopLeftPoint())) {
-		    spawned = true;
-		}
-	    }
-	}
-    }
-
-    /**
-     * Update next point.
-     * This method needs a bit of a clean... hummm...
-     * 
-     */
-    public void updateNextPoint() {
-	if (nextTarget != getTopLeftPoint() || nextTarget == null) {
-	    if (nextPoint.equals(getTopLeftPoint())) {
-		Point spawnTo = new Point(Game.getGame().getLevelMap().getSpawnPoints().get(0).getSpawnTo());
-		spawnTo = new Point(Game.getGame().gameToScreen(spawnTo));
-		Point spawnFrom = new Point(Game.getGame().getLevelMap().getSpawnPoints().get(0).getSpawnFrom());
-		spawnFrom = new Point(Game.getGame().gameToScreen(spawnFrom));
-		System.out.println("end check " + getTopLeftPoint() + " " + spawnTo);
-
-		if (this.getTopLeftPoint().equals(spawnTo) && myDesease.isEndOrder()) {
-		    setNextPoint(spawnFrom);
-		} else if (this.getTopLeftPoint().equals(spawnFrom) && myDesease.isEndOrder()) {
-		    System.out.println();
-		    System.out.println("Person should now die");
-		    remove = true;
-		} else if (currentPath.getLength() > 0) {
-		    setNextPoint(new Point(currentPath.getStep(0).getX() * Game.getGame().getGridSize(), 
-			    currentPath.getStep(0).getY()* Game.getGame().getGridSize()));
-		    currentPath.nextStep();
-		} else if (wandering) {
-		    wander();
-		}
+    public void updateNextTarget() {
+	String toCreate = (myDesease.getOrder().get(myDesease.getOnOrder()));
+	GridObject thisRoom = null, thisItem = null;
+	try {
+	    thisRoom = RoomFactory.createRoom(RoomType.valueOf(toCreate));
+	} catch (Exception exception) {
+	    thisItem = ItemFactory.createItem(ItemType.valueOf(toCreate));
+	} finally {
+	    if (thisRoom != null) {
+		goTo(thisRoom);
+	    } else if (thisItem != null) {
+		goTo(thisItem);
 	    }
 	}
     }
@@ -276,9 +321,12 @@ public class Person extends GridObject {
      * Recalculates the path.
      */
     public void recalcPath() {
-	System.out.println("target is " + getNextTarget() + " p is at " + getTopLeftPoint());
-	Path path = Game.getGame().getFinder().findPath(getTopLeftPoint().x / Game.getGame().getGridSize(),
-		getTopLeftPoint().y / Game.getGame().getGridSize(), getNextTarget().x, getNextTarget().y);
+	System.out.println("target is " + getNextTarget() + " p is at "
+		+ getTopLeftPoint());
+	Path path = Game.getGame().getFinder().findPath(
+		getTopLeftPoint().x / Game.getGame().getGridSize(),
+		getTopLeftPoint().y / Game.getGame().getGridSize(),
+		getNextTarget().x, getNextTarget().y);
 	setCurrentPath(path);
     }
 
@@ -330,51 +378,46 @@ public class Person extends GridObject {
     /**
      * Go to a room or usable item
      * 
-     * @param dest the destination object, ie room or usable item.
+     * @param dest
+     *            the destination object, ie room or usable item.
      */
     public void goTo(GridObject dest) {
+	System.out.println(dest);
+	Boolean found = false;
 	if (dest instanceof Room) {
-	    if (Game.getGame().getRooms().size() == 0) {
-		wander();
-	    } else {
-		for (Room room : Game.getGame().getRooms()) {
-		    if (room.getClass().isInstance(dest)) {
-			wandering = false;
-			System.out.println("Room " + dest.getClass() + " found");
-			setNextTarget(new Point(room.getDoorPoint().x, room.getDoorPoint().y));
-		    }
+	    for (Room room : Game.getGame().getRooms()) {
+		if (room.getClass().isInstance(dest)) {
+		    found = true;
+		    System.out.println("Room " + dest.getClass() + " found");
+		    setNextTarget(new Point(room.getDoorPoint().x, room
+			    .getDoorPoint().y));
 		}
-		myDesease.nextInOrder();
 	    }
 	} else if (dest instanceof UsableItem) {
-	    if (Game.getGame().getUsableItems().size() == 0) {
-		if(!wandering){
-		if (Game.getGame().screenToGame(this.getTopLeftPoint()).equals(
-			    Game.getGame().getLevelMap().getEndOfPathPoint()) || this.myDesease.getOnOrder()!=0) {
-			wandering = true;
-		    } else if (this.getNextTarget() != Game.getGame().getLevelMap().getEndOfPathPoint() && this.myDesease.getOnOrder()==0) {
-			setNextTarget(Game.getGame().getLevelMap().getEndOfPathPoint());
-		    }
+	    for (UsableItem item : Game.getGame().getUsableItems()) {
+		if (item.getClass().isInstance(dest)) {
+		    found = true;
+		    System.out.println("UsableItem " + dest.getClass()
+			    + " found");
+		    setNextTarget(new Point(item.getPointOfUsage().x, item
+			    .getPointOfUsage().y));
 		}
-		//wander();
-	    } else {
-		for (UsableItem item : Game.getGame().getUsableItems()) {
-		    if (item.getClass().isInstance(dest)) {
-			wandering = false;
-			System.out.println("UsableItem " + dest.getClass() + " found");
-			setNextTarget(new Point(item.getPointOfUsage().x, item.getPointOfUsage().y));
-		    }
-		}
-		myDesease.nextInOrder();
 	    }
 	} else {
-	    throw new IllegalArgumentException("The detination " + dest + " does not have a usage point");
+	    throw new IllegalArgumentException("The detination " + dest
+		    + " does not have a usage point");
+	}
+	if(found){
+	    this.myDesease.nextInOrder();
+	    this.moveTowardsNextSquare();
+	} else {
+	    wandering = true;
+	    wander();
 	}
     }
 
     /**
-     * Wander.
-     * Called when a person has no location, and just wanders around.
+     * Wander. Called when a person has no location, and just wanders around.
      */
     public void wander() {
 	System.out.println("wander called---------" + wandering);
@@ -385,8 +428,11 @@ public class Person extends GridObject {
 	    for (int x = personAt.x - 2; x < personAt.x + 3; x++) {
 		for (int y = personAt.y - 2; y < personAt.y + 3; y++) {
 		    if (!(x == personAt.x && y == personAt.y)) {
-			//TODO: Clean up the next line of code.
-			if (x > 0 && y > 0 && !Board.getBoard().getSquare(x, y).getSquareType().equals(SquareType.path)) {
+			if (x > 0
+				&& y > 0
+				&& !Board.getBoard().getSquare(x, y)
+					.getSquareType()
+					.equals(SquareType.path)) {
 			    if (!Game.getGame().getMap().blocked(x, y)) {
 				thisSet.add(new Point(x, y));
 			    }
@@ -395,27 +441,23 @@ public class Person extends GridObject {
 		}
 	    }
 	    Collections.shuffle(thisSet);
-	    //Random random = new Random();
-	    //Integer randomNo = random.nextInt(thisSet.size());
+	    // Random random = new Random();
+	    // Integer randomNo = random.nextInt(thisSet.size());
 	    setNextTarget(thisSet.get(0));
-	} else {
-	    if (Game.getGame().screenToGame(this.getTopLeftPoint()).equals(
-		    Game.getGame().getLevelMap().getEndOfPathPoint()) || this.myDesease.getOnOrder()!=0) {
-		wandering = true;
-	    } else if (this.getNextTarget() != Game.getGame().getLevelMap().getEndOfPathPoint() && this.myDesease.getOnOrder()==0) {
-		setNextTarget(Game.getGame().getLevelMap().getEndOfPathPoint());
-	    }
 	}
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see GridObjects.GridObject#paint(java.awt.Graphics)
      */
     public void paint(Graphics graphic) {
 	int gridSize = Game.getGame().getGridSize();
 	graphic.setColor(this.getColor());
 	graphic.fillOval(this.getX(), this.getY(), gridSize, gridSize);
-	graphic.drawString(this.myDesease.getName(), this.getX() - 5, this.getY() - 5);
+	graphic.drawString(this.myDesease.getName(), this.getX() - 5, this
+		.getY() - 5);
 
     }
 

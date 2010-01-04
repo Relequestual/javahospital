@@ -149,14 +149,14 @@ public class hospitalControlPanel extends JPanel {
 	    if (e.getSource() == drawRD) {
 		Game.getGame().clearBuildingPreview();
 		System.out.println("clicked draw rd");
-		gamePanel.SetMouseListener(new BuildItemMouse(ItemType.ReceptionDesk));
-		gamePanel.SetMouseMotionListener(new BuildItemMouse(ItemType.ReceptionDesk));
+		gamePanel.setMouseListener(new BuildItemMouse(ItemType.ReceptionDesk));
+		gamePanel.setMouseMotionListener(new BuildItemMouse(ItemType.ReceptionDesk));
 	    }
 	    if (e.getSource() == drawGP) {
 		Game.getGame().clearBuildingPreview();
 		System.out.println("clicked draw gp");
-		gamePanel.SetMouseListener(new BuildRoomMouse(RoomType.GPOffice));
-		gamePanel.SetMouseMotionListener(new BuildRoomMouse(RoomType.GPOffice));
+		gamePanel.setMouseListener(new BuildRoomMouse(RoomType.GPOffice));
+		gamePanel.setMouseMotionListener(new BuildRoomMouse(RoomType.GPOffice));
 	    }
 	}
     }

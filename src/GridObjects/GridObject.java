@@ -47,8 +47,7 @@ public abstract class GridObject {
      * @see java.lang.Object#toString()
      */
     public String toString() {
-	String string = new String("Grid Object - " + topLeftPoint + " " + width + " " + height);
-	return string;
+	return ("Grid Object - " + this.getClass()+ " " + topLeftPoint + " " + width + " " + height);
     }
 
     /**

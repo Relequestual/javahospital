@@ -161,19 +161,19 @@ public class levelMaker extends JInternalFrame {
     private void bntMGrassActionPerformed(ActionEvent evt) {
 	System.out.println("bntMGrass.actionPerformed, event="+evt);
 	LevelEditMouse listener = new LevelEditMouse(SquareType.grass);
-	hospitalGamePanel.getGamePanel().SetMouseListener(listener);
+	hospitalGamePanel.getGamePanel().setMouseListener(listener);
     }
     
     private void btnMGroundActionPerformed(ActionEvent evt) {
 	System.out.println("btnMGround.actionPerformed, event="+evt);
 	LevelEditMouse listener = new LevelEditMouse(SquareType.ground);
-	hospitalGamePanel.getGamePanel().SetMouseListener(listener);
+	hospitalGamePanel.getGamePanel().setMouseListener(listener);
     }
     
     private void btnMPathActionPerformed(ActionEvent evt) {
 	System.out.println("btnMPath.actionPerformed, event="+evt);
 	LevelEditMouse listener = new LevelEditMouse(SquareType.path);
-	hospitalGamePanel.getGamePanel().SetMouseListener(listener);
+	hospitalGamePanel.getGamePanel().setMouseListener(listener);
     }
 
 }

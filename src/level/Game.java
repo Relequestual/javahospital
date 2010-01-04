@@ -71,7 +71,7 @@ public class Game {
 
     private Game() {}
 
-    public static GameMap getMap() {
+    public GameMap getMap() {
         return map;
     }
 

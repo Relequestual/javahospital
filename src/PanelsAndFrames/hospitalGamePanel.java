@@ -181,17 +181,13 @@ public class hospitalGamePanel extends JPanel {
 
 	    if (Game.getGame().getPeople() != null) {
 		//This loop must use this format rather than each:for format so that the person can be removed
-		for (int i = Game.getGame().getPeople().size() - 1; i >= 0; i--) {
+		for (int i = Game.getGame().getPeople().size()-1; i >= 0; i--) {
 		    Person person = Game.getGame().getPerson(i);
-		    // for (Person person : Game.getGame().getPeople()) {
-		    // System.out.println("person no " + person.getPersonNo() +
-		    // " checked.");
-		    // System.out.println(new
-		    // SimpleDateFormat("HH:mm:ss").format(new Date()));
+		    
 		    if (person.getRemove()) {
 			Game.getGame().getPeople().remove(i);
 		    } else {
-			person.moveTowardsNextSquare();
+			person.tick();
 		    }
 		}
 	    }
@@ -322,7 +318,7 @@ public class hospitalGamePanel extends JPanel {
 	mouseAt = mouseGiven;
     }
 
-    public void SetMouseListener(MouseListener newListener) {
+    public void setMouseListener(MouseListener newListener) {
 	for (MouseListener ml : getMouseListeners()) {
 	    removeMouseListener(ml);
 	}
@@ -330,7 +326,7 @@ public class hospitalGamePanel extends JPanel {
 	//addMouseListener(new standardGameMouse());
     }
 
-    public void SetMouseMotionListener(MouseMotionListener newListener) {
+    public void setMouseMotionListener(MouseMotionListener newListener) {
 	for (MouseMotionListener ml : getMouseMotionListeners()) {
 	    removeMouseMotionListener(ml);
 	}

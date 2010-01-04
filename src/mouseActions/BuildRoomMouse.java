@@ -255,8 +255,8 @@ public class BuildRoomMouse implements MouseListener, MouseMotionListener {
 	// HowToPlace.nextBuildState();
 	// HowToPlace.setBuildingNowBool(false);
 	currentRect = null;
-	hospitalGamePanel.getGamePanel().SetMouseListener(new BuildRoomDoorMouse(thisBuild));
-	hospitalGamePanel.getGamePanel().SetMouseMotionListener(new BuildRoomDoorMouse(thisBuild));
+	hospitalGamePanel.getGamePanel().setMouseListener(new BuildRoomDoorMouse(thisBuild));
+	hospitalGamePanel.getGamePanel().setMouseMotionListener(new BuildRoomDoorMouse(thisBuild));
     }
 
     @Override
