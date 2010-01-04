@@ -24,9 +24,11 @@ package PanelsAndFrames;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.BoxLayout;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -41,7 +43,21 @@ import GridObjects.Buildings.RoomFactory.RoomType;
 import GridObjects.items.UsableItem;
 import GridObjects.items.ItemFactory.ItemType;
 import GridObjects.people.Person;
+import java.awt.BorderLayout;
 
+
+/**
+* This code was edited or generated using CloudGarden's Jigloo
+* SWT/Swing GUI Builder, which is free for non-commercial
+* use. If Jigloo is being used commercially (ie, by a corporation,
+* company or business for any purpose whatever) then you
+* should purchase a license for each developer using Jigloo.
+* Please visit www.cloudgarden.com for details.
+* Use of Jigloo implies acceptance of these licensing terms.
+* A COMMERCIAL LICENSE HAS NOT BEEN PURCHASED FOR
+* THIS MACHINE, SO JIGLOO OR THIS CODE CANNOT BE USED
+* LEGALLY FOR ANY CORPORATE OR COMMERCIAL PURPOSE.
+*/
 @SuppressWarnings("serial")
 public class hospitalControlPanel extends JPanel {
     private JButton drawGP;
@@ -57,11 +73,15 @@ public class hospitalControlPanel extends JPanel {
     public hospitalControlPanel() {
 	setLocation(0, 750);
 	Dimension CPanelDim = new Dimension(1020, 60);
-	FlowLayout thisLayout = new FlowLayout();
+	GridLayout thisLayout = new GridLayout(1, 1);
+	thisLayout.setColumns(1);
+	thisLayout.setHgap(5);
+	thisLayout.setVgap(5);
 	this.setLayout(thisLayout);
-	setSize(CPanelDim);
+	this.setPreferredSize(CPanelDim);
 
 	drawRD = new JButton("Draw RD");
+	drawRD.setLayout(null);
 	drawGP = new JButton("Draw GP");
 	checkPOU = new JButton("POU?");
 	spawnPerson = new JButton("Spawn");

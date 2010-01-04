@@ -87,7 +87,7 @@ public class hospitalGamePanel extends JPanel {
     }
 
     public Rectangle getPanelBounds() {
-	Rectangle bounds = new Rectangle(hospital.jScrollPane2.getBounds());
+	Rectangle bounds = new Rectangle(hospital.gameScrollPane.getBounds());
 	return bounds;
     }
 
@@ -211,9 +211,9 @@ public class hospitalGamePanel extends JPanel {
     }
 
     void panelScrollChecker() {
-	Point moveView = hospital.jScrollPane2.getViewport().getViewPosition();
-	scrollWidth = hospital.jScrollPane2.getWidth();
-	scrollHeight = hospital.jScrollPane2.getHeight();
+	Point moveView = hospital.gameScrollPane.getViewport().getViewPosition();
+	scrollWidth = hospital.gameScrollPane.getWidth();
+	scrollHeight = hospital.gameScrollPane.getHeight();
 	boolean nearLR = true;
 	boolean nearUD = true;
 	if (scrollWidth - 60 + moveView.getX() < mouseAt.getX()) {
@@ -243,7 +243,7 @@ public class hospitalGamePanel extends JPanel {
 	    difY = 0.5;
 	}
 
-	hospital.jScrollPane2.getViewport().setViewPosition(moveView);
+	hospital.gameScrollPane.getViewport().setViewPosition(moveView);
     }
 
     double difX = 0.5;

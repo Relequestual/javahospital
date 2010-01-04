@@ -22,14 +22,17 @@
 package PanelsAndFrames;
 
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
+import javax.swing.JTextField;
 
 import level.Game;
 import PanelsAndFrames.controlPanels.levelMaker;
 import PanelsAndFrames.controlPanels.personMover;
+import java.awt.BorderLayout;
 
 /**
  * This code was edited or generated using CloudGarden's Jigloo
@@ -48,9 +51,9 @@ import PanelsAndFrames.controlPanels.personMover;
  * 
  */
 public class hospital {
-    static JScrollPane jScrollPane2 = new JScrollPane();
+    static JScrollPane gameScrollPane = new JScrollPane();
     static hospitalControlPanel hospitalControlPanel = new hospitalControlPanel();
-    static JFrame gameWindow = new JFrame();
+    static JFrame gameWindow;
     static JDesktopPane mainPane = new JDesktopPane();
 
     static levelMaker levelMaker = new levelMaker();
@@ -65,22 +68,28 @@ public class hospital {
      */
     public static void main(String[] args) {
 	gameWindow = new JFrame("Java Hospital");
+	FlowLayout gameWindowLayout = new FlowLayout();
 	gameWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	gameWindow.setPreferredSize(new Dimension(1036, 840));
-	gameWindow.setLayout(null);
-	mainPane.setBounds(0, 0, 1036, 840);
-	mainPane.setLayout(null);
+	gameWindow.getContentPane().setLayout(gameWindowLayout);
+	//mainPane.setBounds(0, 0, 1036, 840);
 	hospitalGamePanel.getGamePanel().setPreferredSize(
 		new java.awt.Dimension(Game.getGame().getPanelWidth(), Game.getGame().getPanelHeight()));
+	BorderLayout mainPaneLayout = new BorderLayout();
+	mainPane.setLayout(mainPaneLayout);
 	gameWindow.setContentPane(mainPane);
+
 	{
-	    mainPane.add(jScrollPane2);
-	    jScrollPane2.setBounds(0, 0, 1020, 750);
-	    jScrollPane2.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
-	    jScrollPane2.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-	    jScrollPane2.setViewportView(hospitalGamePanel.getGamePanel());
+	    //gameScrollPane.setBounds(0, 0, 1020, 750);
+	    gameScrollPane.setPreferredSize(new Dimension(900, 750));
+	    gameScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+	    gameScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+	    gameScrollPane.setViewportView(hospitalGamePanel.getGamePanel());
+	    //JTextField test1 = new JTextField();
+	    //mainPane.add(test1, BorderLayout.NORTH);
+	    mainPane.add(gameScrollPane, BorderLayout.CENTER);
 	}
-	mainPane.add(hospitalControlPanel);
+	mainPane.add(hospitalControlPanel, BorderLayout.SOUTH);
 
 	levelMaker.pack();
 	levelMaker.setBounds(20, 20, 200, 300);
