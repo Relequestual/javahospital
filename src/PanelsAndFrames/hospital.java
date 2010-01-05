@@ -26,6 +26,7 @@ import java.awt.FlowLayout;
 
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
@@ -54,8 +55,8 @@ public class hospital {
     static JScrollPane gameScrollPane = new JScrollPane();
     static hospitalControlPanel hospitalControlPanel = new hospitalControlPanel();
     static JFrame gameWindow;
-    static JDesktopPane mainPane = new JDesktopPane();
 
+    static JPanel northPane = new JPanel();
     static levelMaker levelMaker = new levelMaker();
     static personMover personMover = new personMover();
 
@@ -68,16 +69,13 @@ public class hospital {
      */
     public static void main(String[] args) {
 	gameWindow = new JFrame("Java Hospital");
-	FlowLayout gameWindowLayout = new FlowLayout();
 	gameWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+   BorderLayout mainPaneLayout = new BorderLayout();
 	gameWindow.setPreferredSize(new Dimension(1036, 840));
-	gameWindow.getContentPane().setLayout(gameWindowLayout);
+	gameWindow.getContentPane().setLayout(mainPaneLayout);
 	//mainPane.setBounds(0, 0, 1036, 840);
 	hospitalGamePanel.getGamePanel().setPreferredSize(
 		new java.awt.Dimension(Game.getGame().getPanelWidth(), Game.getGame().getPanelHeight()));
-	BorderLayout mainPaneLayout = new BorderLayout();
-	mainPane.setLayout(mainPaneLayout);
-	gameWindow.setContentPane(mainPane);
 
 	{
 	    //gameScrollPane.setBounds(0, 0, 1020, 750);
@@ -87,16 +85,17 @@ public class hospital {
 	    gameScrollPane.setViewportView(hospitalGamePanel.getGamePanel());
 	    //JTextField test1 = new JTextField();
 	    //mainPane.add(test1, BorderLayout.NORTH);
-	    mainPane.add(gameScrollPane, BorderLayout.CENTER);
+	    gameWindow.getContentPane().add(gameScrollPane, BorderLayout.CENTER);
 	}
-	mainPane.add(hospitalControlPanel, BorderLayout.SOUTH);
+	gameWindow.getContentPane().add(hospitalControlPanel, BorderLayout.SOUTH);
 
-	levelMaker.pack();
+	// levelMaker.pack();
 	levelMaker.setBounds(20, 20, 200, 300);
-	mainPane.add(levelMaker);
-	personMover.pack();
+	// personMover.pack();
 	personMover.setBounds(20, 20, 200, 300);
-	mainPane.add(personMover);
+
+	hospitalGamePanel.getGamePanel().add(levelMaker);
+	hospitalGamePanel.getGamePanel().add(personMover);
 
 	gameWindow.pack();
 	gameWindow.setVisible(true);

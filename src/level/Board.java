@@ -42,7 +42,7 @@ public class Board {
 	for (int i = 0; i < Game.getGame().getPanelWidth() / Game.getGame().getGridSize(); i++) {
 	    for (int j = 0; j < Game.getGame().getPanelHeight() / Game.getGame().getGridSize(); j++) {
 		GridSquare thisRect = new GridSquare((i * gridSize), (j * gridSize), gridSize, gridSize);
-		System.out.println("gridsquares " + i + " " + j + " " + thisRect);
+		//System.out.println("gridsquares " + i + " " + j + " " + thisRect);
 		gridSquares[i][j] = thisRect;
 	    }
 	}

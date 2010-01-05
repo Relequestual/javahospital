@@ -30,6 +30,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
+import javax.swing.JDesktopPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -44,7 +45,7 @@ import GridObjects.items.UsableItem;
 import GridObjects.people.Person;
 
 @SuppressWarnings("serial")
-public class hospitalGamePanel extends JPanel {
+public class hospitalGamePanel extends JDesktopPane {
 
     static int gridSize = Game.getGame().getGridSize();
     static int panelHeight = Game.getGame().getPanelHeight();
@@ -63,7 +64,7 @@ public class hospitalGamePanel extends JPanel {
     private static hospitalGamePanel ref;
 
     private hospitalGamePanel() {
-
+       setLayout(null);
 	setGrid();
 	Game.getGame().getLevelMap().setTestLevel();
 	System.out.println("done stuff");
@@ -91,9 +92,9 @@ public class hospitalGamePanel extends JPanel {
 	return bounds;
     }
 
-    public void paint(Graphics graphic) {
+    @Override
+    public void paintComponent(Graphics graphic) {
 	int gridSize = Game.getGame().getGridSize();
-	super.paintComponent(graphic);
 	Color gridColour = new Color(208, 255, 255);
 	Color POU = new Color(246, 144, 0);
 	Color buildingPreview = new Color(168, 185, 185);
