@@ -122,6 +122,7 @@ public class hospitalControlPanel extends JPanel {
 	this.add(lvlMaker);
 
 	setBackground(Color.lightGray);
+	this.setMinimumSize(new java.awt.Dimension(500, 60));
     }
 
     public void spawnTestPerson() {

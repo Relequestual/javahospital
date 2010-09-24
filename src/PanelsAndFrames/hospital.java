@@ -88,6 +88,7 @@ public class hospital {
 	    gameWindow.getContentPane().add(gameScrollPane, BorderLayout.CENTER);
 	}
 	gameWindow.getContentPane().add(hospitalControlPanel, BorderLayout.SOUTH);
+	hospitalControlPanel.setMinimumSize(new java.awt.Dimension(500, 60));
 
 	// levelMaker.pack();
 	levelMaker.setBounds(20, 20, 200, 300);
